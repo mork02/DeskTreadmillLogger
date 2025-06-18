@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace DeskTreadmillLogger.models
+﻿namespace DeskTreadmillLogger.models
 {
     internal class UserEntry
     {
@@ -12,8 +10,6 @@ namespace DeskTreadmillLogger.models
         public string gender { get; set; }          
         public string email { get; set; }           
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
-        public ICollection<ActivityLogEntry> workoutSessions { get; set; }
-        public bool active { get; set; }
 
         public UserEntry(int id, string name, double weightKg, int heightCm)
         {
