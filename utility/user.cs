@@ -1,23 +1,15 @@
 ﻿using DeskTreadmillLogger.models;
-using System.IO;
-using System.Windows.Navigation;
 
 namespace DeskTreadmillLogger.utility
 {
     internal class User
     {
         private static string userDataPath = "config/userData.json";
-        public static UserEntry currentUser;
+        public static UserEntry currentUser { get; private set; }
         private static List<UserEntry> usersList = new();
 
         public static void Init()
         {
-            if (!File.Exists(userDataPath))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(userDataPath));
-                File.WriteAllText(userDataPath, "[]");
-            }
-
             usersList = JSONReader.Load<UserEntry>(userDataPath);
         }
 
@@ -34,33 +26,24 @@ namespace DeskTreadmillLogger.utility
             };
 
             usersList.Add(currentUser);
-            JSONReader.Save(usersList, userDataPath);
+            JSONReader.Add(currentUser, userDataPath);
         }
 
         public static void DeleteUser(int id)
         {
-            SelectUser(id);
-            usersList.Remove(currentUser);
-            JSONReader.Remove(currentUser, userDataPath);
+            JSONReader.Remove<UserEntry>(u => u.id == id, userDataPath);
+            usersList.RemoveAll(entry => entry.id == id);
         }
 
         public static void SelectUser(int id)
         {
-            var temp = usersList.FirstOrDefault(u => u.id == id);
+            UserEntry temp = usersList.FirstOrDefault(u => u.id == id);
             if (temp == null)
             {
+                currentUser = null;
                 return;
             }
-            else
-            {
-                currentUser = temp;
-            }
+            currentUser = temp;
         }
-
-        public static List<UserEntry> GetAllUsers()
-        {
-            return usersList;
-        }
-
     }
 }

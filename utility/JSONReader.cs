@@ -8,23 +8,34 @@ namespace DeskTreadmillLogger.utility
         public static List<T> Load<T>(string filePath)
         {
             if (!File.Exists(filePath))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                File.WriteAllText(filePath, "[]");
                 return new List<T>();
+            }
 
             var json = File.ReadAllText(filePath);
             return JsonSerializer.Deserialize<List<T>>(json);
         }
-        // add a check if path exists
-        public static void Save<T>(List<T> data, string filePath)
+
+        public static void Add<T>(T newData, string filePath)
+        {
+            var dataList = Load<T>(filePath);
+            dataList.Add(newData);
+            Save(dataList, filePath);
+        }
+
+        private static void Save<T>(List<T> data, string filePath)
         {
             var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, json);
         }
-        // also make this method to remove a specific object in the json
-        public static void Remove<T>(List<T> data, string filePath)
+
+        public static void Remove<T>(Predicate<T> match, string filePath)
         {
-            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            var dataList = Load<T>(filePath);
+            dataList.RemoveAll(match);
+            Save(dataList, filePath);
         }
-        //
     }
 }
