@@ -11,16 +11,5 @@
         public string email { get; set; }           
         public DateTime createdAt { get; set; } = DateTime.UtcNow;
 
-        public UserEntry(int id, string name, double weightKg, int heightCm)
-        {
-            this.id = id;
-            this.name = name;
-            this.weightKg = weightKg;
-            this.heightCm = heightCm;
-            this.createdAt = DateTime.UtcNow;
-        }
-
-        public UserEntry() { }
-
     }
 }

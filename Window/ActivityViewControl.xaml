@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DeskTreadmillLogger.ActivityViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="Auto" Width="Auto">
+    <StackPanel Margin="20">
+        <TextBlock x:Name="UserLabel" FontWeight="Bold" FontSize="16"/>
+        <TextBlock Text="Aktivitäten" Margin="0,10,0,5"/>
+        <ListBox x:Name="ActivityList" Height="250"/>
+
+        <TextBlock Text="Neue Aktivität hinzufügen:" FontWeight="Bold" Margin="0,20,0,5"/>
+
+        <TextBlock Text="Geschwindigkeit (km/h)"/>
+        <TextBox x:Name="SpeedBox" Margin="0,5"/>
+
+        <TextBlock Text="Dauer (hh:mm:ss)"/>
+        <TextBox x:Name="DurationBox" Margin="0,5"/>
+
+        <TextBlock Text="Notiz"/>
+        <TextBox x:Name="NotesBox" Margin="0,5"/>
+
+        <Button Content="Speichern" Click="Save_Click" Margin="0,10,0,0" Height="30"/>
+    </StackPanel>
+</UserControl>
