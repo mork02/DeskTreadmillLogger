@@ -33,7 +33,7 @@ namespace DeskTreadmillLogger.utility
         public static void CreateActivity(double speed, TimeSpan duration, string? notes = "")
         {
             if (User.currentUser == null)
-                throw new InvalidOperationException("Current user is not set.");
+                throw new InvalidOperationException("[ActivityLog.cs] user.currentUser is null");
 
             int nextId = activityList.Any() ? activityList.Max(u => u.id) + 1 : 1;
 
@@ -61,7 +61,7 @@ namespace DeskTreadmillLogger.utility
         private static double CalculateBurnedKcal(ActivityLogEntry entry)
         {
             if (User.currentUser == null)
-                throw new InvalidOperationException("Current user is not set.");
+                throw new InvalidOperationException("[ActivityLog.cs] user.currentUser is null");
 
             double met = GetMetFromSpeed(entry.speed);
             double kcalPerMinute = (met * User.currentUser.weightKg * 3.5) / 200.0;
@@ -70,6 +70,9 @@ namespace DeskTreadmillLogger.utility
 
         private static double GetMetFromSpeed(double speed)
         {
+            if (metMap.Count <= 0) 
+                throw new InvalidOperationException("[ActivityLog.cs] metMap is empty");
+
             foreach (var (maxSpeed, met) in metMap)
             {
                 if (speed < maxSpeed)
@@ -81,6 +84,9 @@ namespace DeskTreadmillLogger.utility
 
         public static void DeleteActivity(int id)
         {
+            if (!activityList.Any(u => u.id == id))
+                throw new InvalidOperationException("[ActivityLog.cs] activityList[i].id doesnt exist");
+
             JSONReader.Remove<UserEntry>(u => u.id == id, activityDataPath);
             activityList.RemoveAll(entry => entry.id == id);
         }
